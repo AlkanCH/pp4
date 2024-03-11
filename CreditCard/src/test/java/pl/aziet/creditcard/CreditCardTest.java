@@ -73,6 +73,31 @@ public class CreditCardTest {
 
     @Test
     void itAllowsToPayForSomething() {
+        CreditCard card = new CreditCard();
+        card.assignCredit(BigDecimal.valueOf(1000));
 
+        card.pay(BigDecimal.valueOf(900));
+
+        assertEquals(
+                BigDecimal.valueOf(100),
+                card.getBalance()
+        );
+    }
+
+    @Test
+    void itDenyWhenNotSufficientFounds() {
+        CreditCard card = new CreditCard();
+        card.assignCredit(BigDecimal.valueOf(1000));
+        card.pay(BigDecimal.valueOf(900));
+
+        assertThrows(
+                NotEnoughMoneyException.class,
+                () -> card.pay(BigDecimal.valueOf(200))
+        );
+
+        assertEquals(
+                BigDecimal.valueOf(100),
+                card.getBalance()
+        );
     }
 }
